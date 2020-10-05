@@ -100,13 +100,14 @@ function updateToolTip(chosenXaxis, chosenYaxis, circlesGroup) {
             label="Income, Smoking:";
         }
     }
+    console.log(chosenXaxis, chosenYaxis);
 
     var toolTip = d3.tip()
         .attr("class", "tooltip")
         .offset([80, -60])
         .html(function(d) {
-        return (`${label}<br>${d[chosenXaxis]},${d[chosenYaxis]}`);
-        //return("I'm a tool tip");
+            //return (`${d.abbr} ${label}<br>${d[chosenXaxis]},${d[chosenYaxis]}`);
+        return("I'm a tool tip");
         });     
 
     
@@ -225,9 +226,11 @@ d3.csv ("./data/data.csv").then(function(brf,err){
             xAxis=renderXAxes(xLinearScale,xAxis);
             yLinearScale=yScale(brf,chosenYaxis);
             yAxis=renderYAxes(yLinearScale,yAxis);
+ 
             circlesGroup=renderCircles(circlesGroup,textGroup,xLinearScale,chosenXaxis,yLinearScale,chosenYaxis);
             circlesGroup=updateToolTip(chosenXaxis,chosenYaxis,circlesGroup);
-
+            //circlesGroup=updateToolTip(xAxis,yAxis,circlesGroup);
+            console.log(chosenXaxis,chosenYaxis);
             //changes bold text
             if (chosenXaxis==="poverty") {
                 povertyLabel
@@ -246,6 +249,8 @@ d3.csv ("./data/data.csv").then(function(brf,err){
                 .classed("inactive",false);
             }
         }
+        return chosenXaxis, chosenYaxis;
+
     });    
         yLabelGroup.selectAll("text")
         .on("click",function(){
@@ -258,7 +263,8 @@ d3.csv ("./data/data.csv").then(function(brf,err){
             yAxis=renderYAxes(yLinearScale,yAxis);
             circlesGroup=renderCircles(circlesGroup,textGroup,xLinearScale,chosenXaxis,yLinearScale,chosenYaxis);
             circlesGroup=updateToolTip(chosenXaxis,chosenYaxis,circlesGroup);
-
+            console.log(chosenXaxis,chosenYaxis);
+    
             //changes bold text
             if (chosenYaxis==="obesity") {
                 obesityLabel
@@ -278,7 +284,8 @@ d3.csv ("./data/data.csv").then(function(brf,err){
             }
         }    
 
-        
+        return chosenXaxis, chosenYaxis;
+     
         });
 
 }).catch(function(error){
