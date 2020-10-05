@@ -1,5 +1,5 @@
 //set size
-var svgWidth=800;
+var svgWidth=860;
 var svgHeight=400;
 
 //set margins
@@ -70,12 +70,14 @@ function renderYAxes(newYScale,yAxis) {
 //function for updating circles when new axises are chosen
 //circlesGroup,xAxis,chosenXaxis,yAxis,chosenYaxis
 function renderCircles(circlesGroup,textGroup,newXScale,chosenXaxis,newYScale,chosenYaxis) {
-    circlesGroup.transition()
+    circlesGroup.selectAll("circle")
+    .transition()
     .duration(1000)
     .attr("cx",d=>newXScale(d[chosenXaxis]))
     .attr("cy",d=>newYScale(d[chosenYaxis]));
 
-    textGroup.transition()
+    textGroup
+    .transition()
     .duration(1000)
     .attr("x", d=>newXScale(d[chosenXaxis]))
     .attr("y", d=>newYScale(d[chosenYaxis]-.5));
@@ -100,18 +102,18 @@ function updateToolTip(chosenXaxis, chosenYaxis, circlesGroup) {
             label="Income, Smoking:";
         }
     }
-    console.log(chosenXaxis, chosenYaxis);
+
 
     var toolTip = d3.tip()
         .attr("class", "tooltip")
         .offset([80, -60])
         .html(function(d) {
-            //return (`${d.abbr} ${label}<br>${d[chosenXaxis]},${d[chosenYaxis]}`);
-        return("I'm a tool tip");
+        return (`${d.abbr} ${label}<br>${d[chosenXaxis]},${d[chosenYaxis]}`);
+        //return("I'm a tool tip");
         });     
+        console.log(chosenXaxis, chosenYaxis);
 
     
-        
     circlesGroup.call(toolTip);
 
     circlesGroup.on("mouseover",function(data){
@@ -230,7 +232,7 @@ d3.csv ("./data/data.csv").then(function(brf,err){
             circlesGroup=renderCircles(circlesGroup,textGroup,xLinearScale,chosenXaxis,yLinearScale,chosenYaxis);
             circlesGroup=updateToolTip(chosenXaxis,chosenYaxis,circlesGroup);
             //circlesGroup=updateToolTip(xAxis,yAxis,circlesGroup);
-            console.log(chosenXaxis,chosenYaxis);
+            console.log(chosenXaxis, chosenYaxis);
             //changes bold text
             if (chosenXaxis==="poverty") {
                 povertyLabel
